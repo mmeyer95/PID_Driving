@@ -9,15 +9,12 @@ PID::PID() {}
 PID::~PID() {}
 
 void PID::Init(double Kp_, double Ki_, double Kd_) {
-  /**
-   * TODO: Initialize PID coefficients (and errors, if needed)
-   */
-  //Change these values later
-  Kp=1;
-  Ki=1;
-  Kd=1;
+  Kp=Kp_;
+  Ki=Ki_;
+  Kd=Kd_;
   
   //start with zero error
+  p_error = 0;
   i_error = 0;
   d_error = 0;
 
@@ -26,7 +23,8 @@ void PID::Init(double Kp_, double Ki_, double Kd_) {
 void PID::UpdateError(double cte) {
 
   //UPDATE PID values
-  Kp = cte*Kp; //proportional constant... what should the constant be?
+  p_error = cte;
+  Kp = p_error*Kp; //proportional constant... what should the constant be?
   
   d_error = cte - d_error; //constant equal to the change in error
   Kd = Kd*d_error;
