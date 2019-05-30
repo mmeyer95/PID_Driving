@@ -34,12 +34,9 @@ int main() {
   uWS::Hub h;
 
   PID pid;
-  //change these values later
-  double Kp_=1;
-  double Ki_=1;
-  double Kd_=1;
-  //initialize
-  pid.Init(Kp_,Ki_,Kd_);
+
+  //initialize PID object
+  pid.Init(0,0,0);
 
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, 
                      uWS::OpCode opCode) {
@@ -66,8 +63,12 @@ int main() {
            * NOTE: Feel free to play around with the throttle and speed.
            *   Maybe use another PID controller to control the speed!
            */
+
+          //Update error
+          pid.UpdateError(cte);
+
           //Calculate steering value
-          steer_value = rad2deg(angle);
+          steer_value = pid.TotalError();
           
           // DEBUG
           std::cout << "CTE: " << cte << " Steering Value: " << steer_value 

@@ -1,5 +1,6 @@
 #ifndef PID_H
 #define PID_H
+#include <vector>
 
 class PID {
  public:
@@ -30,6 +31,8 @@ class PID {
    * @output The total PID error
    */
   double TotalError();
+  
+  void Twiddle(double cte);
 
  private:
   /**
@@ -45,6 +48,7 @@ class PID {
   double Kp;
   double Ki;
   double Kd;
+  
 };
 
 #endif  // PID_H
