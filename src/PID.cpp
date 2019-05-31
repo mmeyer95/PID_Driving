@@ -4,18 +4,18 @@
 
 
 //Initialization for twiddle
-  std::vector<double> p;
-  std::vector<double> best_p;
-	double best_error = 100000; //best error
-	const double tol = 0.05; //tolerance
-	int c = 0; //counter for span of time to check my controller
-	int c_tot = 50; //time span amount
-	int n=0; //parameter tuned
-	double dp[3]={0.3,0.001,0.1}; //incrementer for PID constants
-	bool first = true; //first run through twiddle
-	bool second = true; //second run through twiddle 
-	double tot_error = 0; //total error 
-	bool twiddle = true; //continuing to twiddle 
+std::vector<double> p;
+std::vector<double> best_p;
+double best_error = 100000; //best error
+const double tol = 0.05; //tolerance
+int c = 0; //counter for span of time to check my controller
+int c_tot = 50; //time span amount
+int n=0; //parameter tuned
+double dp[3]={0.3,0.001,0.1}; //incrementer for PID constants
+bool first = true; //first run through twiddle
+bool second = true; //second run through twiddle 
+double tot_error = 0; //total error 
+bool twiddle = false; //continuing to twiddle 
 
 
 PID::PID() {}
