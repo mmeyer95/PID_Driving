@@ -10,13 +10,13 @@ std::vector<double> best_p;
 double best_error = 100000; //best error
 double tol = 0.001; //tolerance
 int c = 0; //counter for span of time to check my controller
-int c_tot = 500; //time span amount
+int c_tot = 50; //time span amount
 int n=0; //parameter tuned
-double dp[3]={0.01,0.0001,0.1}; //incrementer for PID constants -- ~1/10th of initial tuning parameters
+double dp[3]={0.01,0.001,0.1}; //incrementer for PID constants -- ~1/10th of initial tuning parameters
 bool first = true; //first run through twiddle
 bool second = true; //second run through twiddle 
 double tot_error = 0; //total error 
-bool twiddle = true; //continuing to twiddle 
+bool twiddle = false; //using twiddle
 
 
 PID::PID() {}
@@ -56,18 +56,21 @@ void PID::Twiddle(double cte){
   
   //every time twiddle is called, increment the counter and total error
   c+=1; //increment counter
-  tot_error += pow(cte,2);	//increment error--always positive so doesn't cancel out
+  tot_error += fabs(cte);	//increment error--always positive so doesn't cancel out
   
   //After c_tot # of samples, change PID
   if (c > c_tot) {
-    std::cout << "Total error: " << tot_error << std::endl;
+    tot_error /= c_tot; //use average CTE
+
     //first sample set, set best error and best values
   	if (first) {
-        best_error = tot_error;
-      	best_p[n] = p[n];
+      	std::cout << "Baseline sample, parameter: " << n << std::endl;
         p[n]+=dp[n]; //increment
       	first = false;
-  	} else { //second sample set, change dp based on if error improved or not
+  	} else { //will stay here until increasing causes an increase in error
+    std::cout << "----------NEW SAMPLE----------" << std::endl;
+    std::cout << "Current PID values: " << p[0] << ", " << p[1] << ", " << p[2] << std::endl;
+    std::cout << "Average error: " << tot_error << std::endl;
       	if (tot_error<=best_error && second){
         	best_error = tot_error;
         	best_p[n]=p[n];
@@ -83,18 +86,16 @@ void PID::Twiddle(double cte){
         			best_error = tot_error;
         			best_p[n]=p[n];
         			dp[n]*=1.1;
-        			p[n]+=dp[n];
       			} else {
-        			p[n] += dp[n];
+        			p[n] += dp[n]; //go backup
         			dp[n]*=0.8; //decrease step size
-        			p[n]+=dp[n]; //re-increment
       			}
                 n+=1; //after 3 times through, go to the next parameter to optimize
       			if (n>2){n=0;} //if went through all 3 constants, set back to the first
       			first = true; //reset flags
       			second = true;
-            } //end of !second
-        } //end of second
+            } //end of third iteration
+        } //end of not better error or second
     } //end of !first
     
     c=0; //recount
@@ -109,8 +110,9 @@ void PID::Twiddle(double cte){
       std::cout << "Twiddle Complete." << std::endl;
       std::cout << "Best PID values: " << best_p[0]<< ", " << best_p[1] << ", " << best_p[2] << std::endl;
     } 
-    std::cout << "Current PID values: " << p[0] << ", " << p[1] << ", " << p[2] << std::endl;
+    std::cout << "......." << std::endl;
     std::cout << "Best error= " << best_error << std::endl;
     std::cout << "Best PID values: " << best_p[0]<< ", " << best_p[1] << ", " << best_p[2] << std::endl;
+    std::cout << "Sum DP: " << sum_dp << std::endl;
   }//end cycle
 } //end of Twiddle

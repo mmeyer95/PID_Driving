@@ -37,9 +37,9 @@ int main() {
 
   //initialize PID object
   //found through trial and error tuning initially
-  double Kp = 0.05;
-  double Ki = 0.001;
-  double Kd = 1;
+  double Kp = 0.0718; //0.06;
+  double Ki = 0.0045; //0.002;
+  double Kd = 1.4344; //1.3;
   pid.Init(Kp, Ki, Kd);
 
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, 
