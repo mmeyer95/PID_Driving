@@ -1,3 +1,5 @@
+# Implementation of a PID Filter
+
 I utilized the principles of PID control in order to maneuver a car around a track in simulation. PID control involves setting a controllable feature in order to minimize the error in the outcome. In this situation, the controllable feature is the steering angle of the vehicle, and the outcome is the vehicle’s position on the track. PID control consists of 3 components of error: the error itself (proportional[P]), the change in the error from the previous sample (derivative [D]), and the accumulation of error (integral [I]).
 
 <center><img src="https://live.staticflickr.com/65535/47998063883_fa15c2ae94.jpg"></center>
@@ -66,4 +68,4 @@ Where all of these steps are looped for each parameter. Twiddle helps to hone in
 
 and the car was able to drive around the track continuously without leaving the driveable portion of the track. Watch the video:
 
-<center><iframe width="560" height="315" src="https://www.youtube.com/embed/kdVC-ikuMPo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></center>
+[Watch the video](https://www.youtube.com/embed/kdVC-ikuMPo)
